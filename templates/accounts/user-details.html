@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card" style="width: 25%; height: auto">
+            {% if not object.user.user_picture %}
+                <img class="card-img-top" src="{% static '/img/default-profile-picture.png' %}" alt="Card image cap">
+            {% else %}
+                <img class="card-img-top" src="{{ object.user.user_picture }}" alt="Card image cap">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title d-flex justify-content-center mb-4">{{ object.user.username }} -
+                    {% if object.user.first_name %} {{ object.user.first_name }} {% endif %}
+                    {% if object.user.last_name %} {{ object.user.last_name }} {% endif %}
+                    {% if not object.user.first_name and not object.user.last_name %} No Name {% endif %}</h5>
+
+                <p class="card-text d-flex justify-content-start mb-1">
+                    {% if object.date_of_birth %}{{ object.date_of_birth }}{% endif %}</p>
+
+                <p class="card-text d-flex justify-content-start">{% if object.bio %}
+                    {{ object.bio|linebreaksbr }} {% else %} No Bio {% endif %}</p>
+
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'user-recipes' pk=object.user.pk %}" class="btn btn-primary mx-1">View Recipes</a>
+                    {% if request.user.pk == object.user.pk %}
+                        <a href="{% url 'account-edit' pk=object.user.pk %}" class="btn btn-primary mx-1">Edit Profile</a>
+
+                        <a href="{% url 'account-delete' pk=object.user.pk %}" class="btn btn-danger mx-1">Delete Account</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

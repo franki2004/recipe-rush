@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="d-flex">
+        <div class="container mt-5 ml-5">
+            <div class="row justify-content-around">
+                <div class="col-md-9">
+                    <h1 class="display-4 text-uppercase font-weight-bolder text-primary">{{ recipe.title }}</h1>
+                    <h2 class="text-dark">{{ recipe.description }}</h2>
+                    <img src="{{ recipe.picture.url }}" alt="{{ recipe.title }}" class="img-fluid mb-3"
+                         style="width: 450px; height: 350px; object-fit: cover">
+
+                    <h2 class="font-weight-bold text-primary">Ingredients</h2>
+                    <p class="text-dark h5">{{ recipe.ingredients|linebreaksbr }}</p>
+
+                    <h2 class="font-weight-bold text-primary ">Instructions</h2>
+                    <p class="text-dark h5 mb-5">{{ recipe.instructions|linebreaksbr }}</p>
+
+                    <p class="text-dark mt-5 mb-0">Created At: {{ recipe.created_at }}</p>
+                    <p class="text-dark">Updated At: {{ recipe.updated_at }}</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="container mt-3 mt-md-0 m-5">
+                        <p class="text-dark h2 mb-5"><span
+                                class="text-primary">Category:</span> <a class="badge badge-light"
+                                                                       href="{% url 'browse-recipes' category=recipe.category %}">{{ recipe.get_category_display }}</a></p>
+                        <p class="text-dark h2 mb-5"><span
+                                class="text-primary">Author:</span> <a class="badge badge-light"
+                                                                       href="{% url 'account-details' pk=recipe.author.pk %}">{{ recipe.author }}</a>
+                        </p>
+                        <p class="text-dark h2 mb-5">{% if request.user.is_authenticated %}
+                            {% if request.user in recipe.likes.all %}
+                                <a href="{% url 'recipe-like' pk=recipe.pk %}" class="like-btn" style="cursor: pointer">
+                                    <i class="fas fa-heart heart-full text-danger"></i>
+                                    <!-- Full red heart icon if user has liked -->
+                                </a>
+                            {% else %}
+                                <a href="{% url 'recipe-like' pk=recipe.pk %}" class="like-btn" style="cursor: pointer">
+                                    <i class="far fa-heart heart-gray"></i>
+                                    <!-- Gray heart icon if user has not liked -->
+                                </a>
+                            {% endif %}
+
+                        {% else %}
+                            <i class="far fa-heart heart-gray"></i> <!-- Gray heart icon for unauthenticated users -->
+                        {% endif %}<span class="likes-count">{{ recipe.likes.count }}</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
