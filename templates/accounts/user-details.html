@@ -3,16 +3,16 @@
 {% block content %}
     <div class="d-flex justify-content-center mt-5">
         <div class="card" style="width: 25%; height: auto">
-            {% if not object.user.user_picture %}
+            {% if not object.user_picture %}
                 <img class="card-img-top" src="{% static '/img/default-profile-picture.png' %}" alt="Card image cap">
             {% else %}
-                <img class="card-img-top" src="{{ object.user.user_picture }}" alt="Card image cap">
+                <img class="card-img-top" src="{{ object.user_picture }}" alt="Card image cap">
             {% endif %}
             <div class="card-body">
                 <h5 class="card-title d-flex justify-content-center mb-4">{{ object.user.username }} -
-                    {% if object.user.first_name %} {{ object.user.first_name }} {% endif %}
-                    {% if object.user.last_name %} {{ object.user.last_name }} {% endif %}
-                    {% if not object.user.first_name and not object.user.last_name %} No Name {% endif %}</h5>
+                    {% if object.first_name %} {{ object.first_name }} {% endif %}
+                    {% if object.last_name %} {{ object.last_name }} {% endif %}
+                    {% if not object.first_name and not object.last_name %} No Name {% endif %}</h5>
 
                 <p class="card-text d-flex justify-content-start mb-1">
                     {% if object.date_of_birth %}{{ object.date_of_birth }}{% endif %}</p>

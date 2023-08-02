@@ -51,15 +51,6 @@ class ProfileEditView(generic_views.UpdateView):
     def get_object(self, queryset=None):
         return get_object_or_404(RecipeRushProfile, user=self.request.user)
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        self.object.user.first_name = form.cleaned_data['first_name']
-        self.object.user.last_name = form.cleaned_data['last_name']
-        self.object.user.user_picture = form.cleaned_data['user_picture']
-        print(form.cleaned_data['user_picture'])
-        self.object.user.save()
-        return response
-
     def get_success_url(self):
         return reverse_lazy('account-details', kwargs={'pk': self.request.user.pk})
 

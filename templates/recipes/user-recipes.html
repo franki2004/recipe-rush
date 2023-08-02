@@ -1,24 +1,24 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block content %}
     {% if not user_recipes %}
         <div class="d-flex justify-content-center h-75">
             <div class="d-flex justify-content-center flex-column align-items-center">
-                <p class="font-weight-bolder display-4">You don't have any recipes yet. <i class="fas fa-sad-tear"></i>
+                <p class="font-weight-bolder display-4">User doesn't have any recipes yet. <i class="fas fa-sad-tear"></i>
                 </p>
-                <p class="font-weight-bolder display-4">Create your own recipe now!</p>
-                <a href="{% url 'recipe-create' %}" class="btn btn-primary btn-lg">Create</a>
             </div>
         </div>
     {% else %}
         <div class="container">
+        <h2 class="mb-4">{{ author_name }}'s Recipes</h2>
             <div class="row">
                 {% for recipe in user_recipes %}
                     <div class="col-sm-4 mb-4">
                         <div class="card">
                             <img class="card-img-top img-fluid" src="{{ recipe.picture.url }}" alt="Card image cap">
                             <div class="card-body">
-                                <h5 class="card-title">{{ recipe.title }}</h5>
+                                <h5 class="card-title text-dark font-weight-bold">{{ recipe.title }}</h5>
                                 <p class="card-text">{{ recipe.description }}</p>
                                 <div class="d-flex justify-content-center">
                                     <a href="{% url 'recipe-details' pk=recipe.pk %}"
@@ -30,7 +30,7 @@
                                 <small class="text-muted">Last Updated: {{ recipe.updated_at }}</small>
                                 <small class="text-muted">
                                     {% if request.user.is_authenticated %}
-                                        {% if request.user in recipe.likes.all %}
+                                        {% if recipe|has_liked:request.user %}
                                             <i class="fas fa-heart heart-full text-danger"></i>
                                             <!-- Full red heart icon if user has liked -->
                                         {% else %}
@@ -41,7 +41,8 @@
                                         <i class="far fa-heart heart-gray"></i>
                                         <!-- Gray heart icon for unauthenticated users -->
                                     {% endif %}
-                                    <span class="likes-count">{{ recipe.likes.count }}</span></small>
+                                    <span class="likes-count">{{ recipe.likes_set.count }}</span>
+                                </small>
                             </div>
                         </div>
                     </div>

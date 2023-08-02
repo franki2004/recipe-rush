@@ -68,22 +68,3 @@ class ProfileEditForm(forms.ModelForm):
         model = RecipeRushProfile
         fields = ('first_name', 'last_name', 'bio', 'date_of_birth', 'gender', 'user_picture')
 
-    def __init__(self, *args, **kwargs):
-        super(ProfileEditForm, self).__init__(*args, **kwargs)
-        if self.instance.user:
-            self.fields['first_name'].initial = self.instance.user.first_name
-            self.fields['last_name'].initial = self.instance.user.last_name
-            self.fields['user_picture'].initial = self.instance.user.user_picture
-
-    def save(self, commit=True):
-        profile = super().save(commit=False)
-        user = profile.user
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.user_picture = self.cleaned_data['user_picture']
-
-        if commit:
-            profile.save()
-            user.save()
-
-        return profile

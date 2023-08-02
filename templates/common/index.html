@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load custom_tags %}
 {% load static %}
 {% block content %}
     <div class="container-fluid">
@@ -21,16 +22,15 @@
                                 <h5 class="card-title text-dark font-weight-bold">{{ recipe.title }}</h5>
                                 <p class="card-text">{{ recipe.description }}</p>
                                 <div class="d-flex justify-content-center">
-                                    <a href="{% url 'recipe-details' pk=recipe.pk %}"
-                                       class="btn btn-primary btn-sm">View Recipe</a>
+                                    <a href="{% url 'recipe-details' pk=recipe.pk %}" class="btn btn-primary btn-sm">View
+                                        Recipe</a>
                                 </div>
-
                             </div>
                             <div class="card-footer d-flex justify-content-between">
                                 <small class="text-muted">Last Updated: {{ recipe.updated_at }}</small>
                                 <small class="text-muted">
                                     {% if request.user.is_authenticated %}
-                                        {% if request.user in recipe.likes.all %}
+                                        {% if recipe|has_liked:request.user %}
                                             <i class="fas fa-heart heart-full text-danger"></i>
                                             <!-- Full red heart icon if user has liked -->
                                         {% else %}
@@ -41,7 +41,8 @@
                                         <i class="far fa-heart heart-gray"></i>
                                         <!-- Gray heart icon for unauthenticated users -->
                                     {% endif %}
-                                    <span class="likes-count">{{ recipe.likes.count }}</span></small>
+                                    <span class="likes-count">{{ recipe.likes_set.count }}</span>
+                                </small>
                             </div>
                         </div>
                     </div>

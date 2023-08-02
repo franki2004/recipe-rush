@@ -1,10 +1,11 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block content %}
     <div class="d-flex">
         <div class="container mt-5 ml-5">
             <div class="row justify-content-around">
-                <div class="col-md-9">
+                <div class="col-md-8">
                     <h1 class="display-4 text-uppercase font-weight-bolder text-primary">{{ recipe.title }}</h1>
                     <h2 class="text-dark">{{ recipe.description }}</h2>
                     <img src="{{ recipe.picture.url }}" alt="{{ recipe.title }}" class="img-fluid mb-3"
@@ -19,31 +20,71 @@
                     <p class="text-dark mt-5 mb-0">Created At: {{ recipe.created_at }}</p>
                     <p class="text-dark">Updated At: {{ recipe.updated_at }}</p>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="container mt-3 mt-md-0 m-5">
                         <p class="text-dark h2 mb-5"><span
                                 class="text-primary">Category:</span> <a class="badge badge-light"
-                                                                       href="{% url 'browse-recipes' category=recipe.category %}">{{ recipe.get_category_display }}</a></p>
+                                                                         href="{% url 'browse-recipes' category=recipe.category %}">{{ recipe.get_category_display }}</a>
+                        </p>
                         <p class="text-dark h2 mb-5"><span
                                 class="text-primary">Author:</span> <a class="badge badge-light"
                                                                        href="{% url 'account-details' pk=recipe.author.pk %}">{{ recipe.author }}</a>
                         </p>
-                        <p class="text-dark h2 mb-5">{% if request.user.is_authenticated %}
-                            {% if request.user in recipe.likes.all %}
-                                <a href="{% url 'recipe-like' pk=recipe.pk %}" class="like-btn" style="cursor: pointer">
-                                    <i class="fas fa-heart heart-full text-danger"></i>
-                                    <!-- Full red heart icon if user has liked -->
-                                </a>
+                        <p class="text-dark h2 mb-5">
+                            {% if request.user.is_authenticated %}
+                                {% if recipe|has_liked:request.user %}
+                                    <a href="{% url 'recipe-like' pk=recipe.pk %}" class="like-btn text-danger"
+                                       style="cursor: pointer">
+                                        <i class="fas fa-heart heart-full"></i></a>
+                                {% else %}
+                                    <a href="{% url 'recipe-like' pk=recipe.pk %}" class="like-btn text-secondary"
+                                       style="cursor: pointer">
+                                        <i class="far fa-heart heart-empty"></i></a>
+                                {% endif %}
                             {% else %}
-                                <a href="{% url 'recipe-like' pk=recipe.pk %}" class="like-btn" style="cursor: pointer">
-                                    <i class="far fa-heart heart-gray"></i>
-                                    <!-- Gray heart icon if user has not liked -->
-                                </a>
+                                <a href="{% url 'account-login' %}" class="text-secondary">
+                                    <i class="far fa-heart heart-empty"></i></a>
                             {% endif %}
+                            <span class="likes-count">{{ recipe.likes_set.count }}</span></p>
+                        {% if request.user.pk == recipe.author.pk %}
+                            <a href="{% url 'recipe-edit' pk=recipe.pk %}" class="btn btn-primary">Edit
+                                Recipe</a>
 
-                        {% else %}
-                            <i class="far fa-heart heart-gray"></i> <!-- Gray heart icon for unauthenticated users -->
-                        {% endif %}<span class="likes-count">{{ recipe.likes.count }}</span></p>
+                            <a href="{% url 'recipe-delete' pk=recipe.pk %}" class="btn btn-danger">Delete
+                                Recipe</a>
+                        {% endif %}
+
+                        <div class="mt-5">
+                            <h3 class="mb-3 text-primary font-weight-bold">Add a Comment</h3>
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ comment_form.comment_text }}
+                                </div>
+                                <button type="submit" class="btn btn-primary">Post Comment</button>
+                            </form>
+                        </div>
+                        <hr>
+                        <!-- Display Existing Comments -->
+                        <h3 class="mt-4 text-primary font-weight-bold">Comments</h3>
+                        <div class="d-flex flex-column">
+                            {% for comment in recipe.comments.all %}
+                                <div class="card-body d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="card-title text-primary">{{ comment.commenter_name }}</h5>
+                                        <p class="card-text">{{ comment.comment_text }}</p>
+                                        <p class="card-text"><small class="text-muted">{{ comment.timestamp }}</small>
+                                        </p>
+                                    </div>
+                                    {% if request.user.pk == comment.commenter_name.pk %}
+                                        <a href="{% url 'comment-delete' comment.pk %}" class="btn btn-sm btn-danger h-100">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <hr class="mb-0">
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
