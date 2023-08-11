@@ -16,7 +16,7 @@ class Recipe(models.Model):
         ('soup', 'Soup'),
         ('dessert', 'Dessert')
     ]
-    title = models.CharField(null=False, blank=False, max_length=30, validators=[MinLengthValidator(3)])
+    title = models.CharField(null=False, blank=False, max_length=40, validators=[MinLengthValidator(3)])
     description = models.CharField(null=False, blank=False, max_length=200, validators=[MinLengthValidator(5)])
     ingredients = models.TextField(null=False, blank=False, max_length=400, validators=[MinLengthValidator(5)])
     instructions = models.TextField(null=False, blank=False, max_length=2500)

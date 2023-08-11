@@ -1,6 +1,11 @@
 {% extends 'base/base_forms.html' %}
 {% load static %}
 {% block content %}
+    <style>
+        .bg-image {
+            background-image: url("{% static 'img/bg-food2.jpg' %}")
+        }
+    </style>
     <body class="bg-gradient-primary">
 
     <div class="container">
@@ -28,7 +33,9 @@
                                         <div class="form-group mb-5">
                                             Email - {{ object.email }}
                                         </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-danger btn-block">Delete</button>
+                                        <button type="submit" class="btn btn-primary btn-user btn-danger btn-block">
+                                            Delete
+                                        </button>
                                         {% csrf_token %}
                                     </form>
                                 </div>
@@ -42,5 +49,5 @@
         </div>
 
     </div>
-</body>
+    </body>
 {% endblock %}

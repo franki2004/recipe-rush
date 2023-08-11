@@ -2,8 +2,7 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from .views import RecipeCreateView, RecipeDetailsView, RecipeEditView, RecipeDeleteView, Index, UserRecipesDetailsView, \
-    like_recipe, BrowseByCategoryView, LikedRecipesView, CommentDeleteView
-from .. import settings
+    like_recipe, BrowseByCategoryView, LikedRecipesView, CommentDeleteView, RecipeSearchView
 
 urlpatterns = [
     path('', Index.as_view(), name='index'),
@@ -15,5 +14,6 @@ urlpatterns = [
     path('recipe/like/<int:pk>/', like_recipe, name='recipe-like'),
     path('browse-recipes/<str:category>', BrowseByCategoryView.as_view(), name='browse-recipes'),
     path('liked-recipes/', LikedRecipesView.as_view(), name='liked-recipes'),
-    path('comment-delete/<int:pk>', CommentDeleteView.as_view(), name='comment-delete')
+    path('comment-delete/<int:pk>', CommentDeleteView.as_view(), name='comment-delete'),
+    path('search/', RecipeSearchView.as_view(), name='recipe-search'),
 ]

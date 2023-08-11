@@ -1,14 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as generic_views
+from rest_framework import filters, generics
 
 from RecipeRush.recipes.forms import RecipeCreateForm, RecipeEditForm, CommentForm
 from RecipeRush.recipes.models import Recipe, Likes, Comment
+from RecipeRush.recipes.serializers import RecipeSerializer
 
 required_login = method_decorator(login_required, name='dispatch')
 UserModel = get_user_model()
@@ -152,8 +153,32 @@ def custom_404(request, exception):
     return render(request, 'common/404.html', status=404)
 
 
+@required_login
 class CommentDeleteView(generic_views.View):
     def get(self, request, pk):
         comment = get_object_or_404(Comment, pk=pk)
         comment.delete()
         return redirect('recipe-details', pk=comment.recipe.pk)
+
+
+class RecipeSearchView(generics.ListAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'ingredients', 'category']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_input = self.request.query_params.get('q')
+        if search_input:
+            queryset = queryset.filter(title__icontains=search_input) | \
+                       queryset.filter(ingredients__icontains=search_input) | \
+                       queryset.filter(category__icontains=search_input)
+        else:
+            queryset = queryset.none()
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        context = {'object_list': queryset, 'search_input': request.query_params.get('q')}
+        return render(request, 'recipes/search_results.html', context)

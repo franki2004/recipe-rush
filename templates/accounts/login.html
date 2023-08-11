@@ -1,8 +1,12 @@
 {% extends 'base/base_forms.html' %}
 {% load static %}
 {% block content %}
-<body class="bg-gradient-primary">
-
+    <body class="bg-gradient-primary">
+    <style>
+        .bg-login-image {
+            background-image: url("{% static 'img/bg-food4.jpg' %}")
+        }
+    </style>
     <div class="container">
 
         <!-- Outer Row -->
@@ -28,18 +32,19 @@
                                             {{ form.password }}
                                         </div>
                                         {% if form.non_field_errors %}
-                                        <ul class='form-errors'>
-                                        {% for error in form.non_field_errors %}
-                                            <li>{{ error }}</li>
-                                            {% endfor %}
-                                        </ul>
+                                            <ul class='form-errors'>
+                                                {% for error in form.non_field_errors %}
+                                                    <li>{{ error }}</li>
+                                                {% endfor %}
+                                            </ul>
                                         {% endif %}
                                         <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
                                         {% csrf_token %}
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="{% url 'account-register' %}">Don't have an account? Register!</a>
+                                        <a class="small" href="{% url 'account-register' %}">Don't have an account?
+                                            Register!</a>
                                     </div>
                                 </div>
                             </div>
@@ -52,5 +57,5 @@
         </div>
 
     </div>
-</body>
+    </body>
 {% endblock %}

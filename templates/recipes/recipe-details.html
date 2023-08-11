@@ -2,20 +2,27 @@
 {% load static %}
 {% load custom_tags %}
 {% block content %}
+    <style>
+        .text-wrap {
+            white-space: pre-wrap;
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+    </style>
     <div class="d-flex">
         <div class="container mt-5 ml-5">
             <div class="row justify-content-around">
                 <div class="col-md-8">
-                    <h1 class="display-4 text-uppercase font-weight-bolder text-primary">{{ recipe.title }}</h1>
-                    <h2 class="text-dark">{{ recipe.description }}</h2>
+                    <h1 class="display-4 text-uppercase font-weight-bolder text-primary text-wrap">{{ recipe.title }}</h1>
+                    <h2 class="text-dark text-wrap">{{ recipe.description }}</h2>
                     <img src="{{ recipe.picture.url }}" alt="{{ recipe.title }}" class="img-fluid mb-3"
                          style="width: 450px; height: 350px; object-fit: cover">
 
                     <h2 class="font-weight-bold text-primary">Ingredients</h2>
-                    <p class="text-dark h5">{{ recipe.ingredients|linebreaksbr }}</p>
+                    <p class="text-dark h5 text-wrap">{{ recipe.ingredients|linebreaksbr }}</p>
 
                     <h2 class="font-weight-bold text-primary ">Instructions</h2>
-                    <p class="text-dark h5 mb-5">{{ recipe.instructions|linebreaksbr }}</p>
+                    <p class="text-dark h5 mb-5 text-wrap">{{ recipe.instructions|linebreaksbr }}</p>
 
                     <p class="text-dark mt-5 mb-0">Created At: {{ recipe.created_at }}</p>
                     <p class="text-dark">Updated At: {{ recipe.updated_at }}</p>
@@ -61,7 +68,11 @@
                                 <div class="form-group">
                                     {{ comment_form.comment_text }}
                                 </div>
-                                <button type="submit" class="btn btn-primary">Post Comment</button>
+                                {% if request.user.is_authenticated %}
+                                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                                {% else %}
+                                    <a href="{% url 'account-login' %}" class="btn btn-primary">Post Comment</a>
+                                {% endif %}
                             </form>
                         </div>
                         <hr>
@@ -76,8 +87,9 @@
                                         <p class="card-text"><small class="text-muted">{{ comment.timestamp }}</small>
                                         </p>
                                     </div>
-                                    {% if request.user.pk == comment.commenter_name.pk %}
-                                        <a href="{% url 'comment-delete' comment.pk %}" class="btn btn-sm btn-danger h-100">
+                                    {% if request.user.pk == comment.commenter_name.pk or request.user.pk == recipe.author.pk %}
+                                        <a href="{% url 'comment-delete' comment.pk %}"
+                                           class="btn btn-sm btn-danger h-100">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     {% endif %}

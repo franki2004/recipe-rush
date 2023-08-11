@@ -1,6 +1,11 @@
 {% extends 'base/base_forms.html' %}
 {% load static %}
 {% block content %}
+    <style>
+        .bg-register-image {
+            background-image: url("{% static 'img/bg-food.jpg' %}")
+        }
+    </style>
     <body class="bg-gradient-primary">
 
     <div class="container">
@@ -13,7 +18,7 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create a Recipe!</h1>
+                                <h1 class="h4 text-gray-900 mb-4 font-weight-bold">Edit your Recipe!</h1>
                             </div>
                             <form class="user" method="post" enctype="multipart/form-data"
                                   action="{% url 'recipe-edit' pk=object.pk %} ">
@@ -43,7 +48,7 @@
                                 </div>
 
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-primary btn-user btn-block">Edit</button>
+                                <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">Edit</button>
                             </form>
                         </div>
                     </div>

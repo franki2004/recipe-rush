@@ -1,6 +1,9 @@
 {% extends 'base/base_forms.html' %}
 {% load static %}
 {% block content %}
+    <style>
+    .bg-register-image{background-image: url("{% static 'img/bg-food.jpg' %}")}
+    </style>
     <body class="bg-gradient-primary">
 
     <div class="container">
@@ -14,24 +17,24 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Delete Recipe</h1>
+                                        <h1 class="h4 text-gray-900 mb-4 font-weight-bold">Delete Recipe</h1>
                                     </div>
-                                    <h3 class="h5 text-danger mb-4">Note: Deleted recipes cannot be recovered!</h3>
+                                    <h3 class="h5 text-danger mb-4 font-weight-bolder">Note: Deleted recipes cannot be recovered!</h3>
                                     <form class="user" method="post" action="{% url 'recipe-delete' pk=object.pk %}">
-                                        <div class="form-group">
-                                            Title - {{ object.title }}
+                                        <div class="form-group font-weight-bold text-primary">
+                                            Title - <span class="font-weight-bold text-dark">{{ object.title }}</span>
                                         </div>
-                                        <div class="form-group">
-                                            Category - {{ object.category }}
+                                        <div class="form-group font-weight-bold text-primary">
+                                            Category - <span class="font-weight-bold text-dark">{{ object.category }}</span>
                                         </div>
-                                        <div class="form-group mb-5">
-                                            Description - {{ object.description }}
+                                        <div class="form-group mb-5 font-weight-bold text-primary">
+                                            Description - <span class="font-weight-bold text-dark">{{ object.description }}</span>
                                         </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-danger btn-block">
+                                        <button type="submit" class="btn btn-primary btn-user btn-danger btn-block font-weight-bold">
                                             Delete
                                         </button>
                                         {% csrf_token %}
