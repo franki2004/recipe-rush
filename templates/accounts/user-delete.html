@@ -3,7 +3,7 @@
 {% block content %}
     <style>
         .bg-image {
-            background-image: url("{% static 'img/bg-food2.jpg' %}")
+            background-image: url("{% static 'img/bg-food4.jpg' %}")
         }
     </style>
     <body class="bg-gradient-primary">
@@ -19,21 +19,21 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-image"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Delete Account</h1>
+                                        <h1 class="h4 text-gray-900 mb-4 font-weight-normal">Delete Account</h1>
                                     </div>
-                                    <h3 class="h5 text-danger mb-4">Note: Deleted account cannot be recovered!</h3>
+                                    <h3 class="h5 text-danger mb-4 font-weight-bolder">Note: Deleted account cannot be recovered!</h3>
                                     <form class="user" method="post" action="{% url 'account-delete' pk=object.pk %}">
                                         <div class="form-group">
-                                            Username - {{ object.username }}
+                                            <span class="font-weight-bold text-primary">Username - {{ object.username }}</span>
                                         </div>
-                                        <div class="form-group mb-5">
-                                            Email - {{ object.email }}
+                                        <div class="form-group mb-5 text-dark">
+                                            <span class="font-weight-bold text-primary">Email - {{ object.email }}</span>
                                         </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-danger btn-block">
+                                        <button type="submit" class="btn btn-primary btn-user btn-danger btn-block font-weight-bold">
                                             Delete
                                         </button>
                                         {% csrf_token %}

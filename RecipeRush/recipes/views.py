@@ -161,7 +161,7 @@ class CommentDeleteView(generic_views.View):
         return redirect('recipe-details', pk=comment.recipe.pk)
 
 
-class RecipeSearchView(generics.ListAPIView):
+class RecipeSearchView(generics.ListAPIView):   # Using Django REST framework
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     filter_backends = [filters.SearchFilter]

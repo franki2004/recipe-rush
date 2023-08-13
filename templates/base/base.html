@@ -32,7 +32,7 @@
 
     @media (max-width: 992px) {
         .card {
-            height: auto; /* Allow the card to grow based on content */
+            height: auto;
         }
     }
 
@@ -227,6 +227,14 @@
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
+                                {% if request.user.is_staff or request.user.is_superuser %}
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'admin:index' %}">
+                                        <i class="fas fa-toolbox fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Admin
+                                    </a>
+                                {% endif %}
+
                             {% else %}
                                 <a class="dropdown-item" href="{% url 'account-login' %}">
                                     <i class="fas fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -244,7 +252,7 @@
 
 
             </nav>
-            <!-- End of Topbar -->
+            <!-- End of Top-bar -->
             {% block content %}
             {% endblock %}
         </div>
@@ -298,6 +306,11 @@
                 cardText.innerText = content.slice(0, maxLength) + '...';
             }
         });
+    });
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            location.reload();
+        }
     });
 </script>
 </body>

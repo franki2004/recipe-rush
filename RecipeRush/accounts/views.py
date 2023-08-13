@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views, login, get_user_model
-from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import generic as generic_views
 from RecipeRush.accounts.forms import RegisterUserForm, LoginUserForm, ProfileEditForm
@@ -60,3 +60,4 @@ class AccountDeleteView(generic_views.DeleteView):
     template_name = 'accounts/user-delete.html'
     model = UserModel
     success_url = reverse_lazy('index')
+

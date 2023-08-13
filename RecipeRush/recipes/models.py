@@ -6,7 +6,6 @@ from django.utils import timezone
 UserModel = get_user_model()
 
 
-# Create your models here.
 class Recipe(models.Model):
     CHOICES = [
         ('main-dish', "Main Dish"),
