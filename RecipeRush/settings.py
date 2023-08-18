@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', False)
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(' ')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # Application definition
 
@@ -71,7 +71,7 @@ WSGI_APPLICATION = 'RecipeRush.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv('POSTGRES_DB', None),
+        "NAME": os.getenv('POSTGRES_DB_NAME', None),
         "USER": os.getenv('POSTGRES_USER', None),
         "PASSWORD": os.getenv('POSTGRES_PASSWORD', None),
         "HOST": os.getenv('DB_HOST', None),
